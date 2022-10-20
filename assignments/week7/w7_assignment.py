@@ -84,6 +84,7 @@ else:
 
 # F. Print the final list in reverse order
 print("Step 2 - F:", SeqList2_10[::-1])
+print("Step 2 - F:", SeqList2_10.reverse)
 
 # Part 3
 
@@ -99,11 +100,11 @@ for x in NumList:
     value = x
     value_2 = x*2
     index = NumList.index(x)
-    if(x%2 == 0):
+    if x%2 == 0:
         even_odd = "even"
     else:
         even_odd = "odd"
-    print(value,",",value_2, ",", index, ",", even_odd)
+    print("%d,%d,%d,%s" % (value,value_2,index,even_odd))
 
 # C. Write output to a file
 
