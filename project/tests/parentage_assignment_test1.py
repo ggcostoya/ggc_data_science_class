@@ -1,6 +1,6 @@
 # Generate Parental Population 
 
-# imports
+# import packages? libraries?
 import random
 
 # define list of bases
