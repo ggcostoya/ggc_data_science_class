@@ -1,0 +1,66 @@
+
+# Data Science Class: Project Results
+
+```{r, message = FALSE, echo=FALSE, warning=FALSE, fig.align='center', fig.width = 6, fig.height = 4}
+
+# load packages 
+library(readr)
+library(tidyverse)
+
+# load and combine data
+parents_100 <- read_csv("data/base.csv") %>% mutate(N_parents = rep(100, nrow(.)))
+parents_50 <- read_csv("data/50parents.csv") %>% mutate(N_parents = rep(50, nrow(.)))
+parents_200 <- read_csv("data/200parents.csv") %>% mutate(N_parents = rep(200, nrow(.)))
+parents <- rbind(parents_100, parents_50, parents_200)
+
+```
+
+
+```{r, message = FALSE, echo=FALSE, warning=FALSE, fig.align='center', fig.width = 6, fig.height = 4}
+
+# plot full observation 
+parents_100 %>% 
+  ggplot(aes(x = 100 - 100 * percentage_snps_rm, y = correct_parentage)) +
+  geom_smooth(col = "gray", alpha = 0.25, size = 1,
+              method = "glm",  method.args = list(family = "binomial")) +
+  geom_jitter( size = 2, alpha = 0.5, col = "black") +
+  xlab("Number of SNPs used") +
+  ylab("Parentage relationships assigned correctly (%)") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+# plot observations between 2 and 10 SNPs
+parents_100 %>% 
+  ggplot(aes(x = 100 - 100 * percentage_snps_rm, y = correct_parentage)) +
+  geom_smooth(col = "gray", alpha = 0.25, size = 2,
+              method = "glm",  method.args = list(family = "binomial")) +
+  geom_jitter(width = 0.1, size = 4, alpha = 0.5, col = "black") +
+  scale_x_continuous(breaks = c(2:10), limits = c(1.8,10), expand = c(0,0)) +
+  xlab("Number of SNPs used") +
+  ylab("Parentage relationships assigned correctly (%)") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+```
+
+```{r, message = FALSE, echo=FALSE, warning=FALSE, fig.align='center', fig.width = 6, fig.height = 4}
+
+## exploring the effects of different parentages
+parents %>% 
+  ggplot(aes(x = 100 - 100 * percentage_snps_rm, y = correct_parentage, 
+             col = as.factor(N_parents), fill = as.factor(N_parents))) +
+  geom_smooth(alpha = 0.25, size = 1,
+              method = "glm",  method.args = list(family = "binomial")) +
+  geom_jitter(width = 0.1, size = 3, alpha = 0.5) +
+  scale_fill_discrete(name = "Number of parents") +
+  scale_color_discrete(name = "Number of parents") +
+  scale_x_continuous(breaks = c(2:10), limits = c(1.8,10), expand = c(0,0)) +
+  xlab("Number of SNPs used") +
+  ylab("Parentage relationships assigned correctly (%)") +
+  theme_minimal() +
+  theme(axis.line = element_line(),
+        legend.position = c(0.8, 0.2),
+        legend.text = element_text(size = 12)) 
+  
+
+```
+
